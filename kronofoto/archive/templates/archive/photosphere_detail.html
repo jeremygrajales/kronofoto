@@ -16,25 +16,118 @@
         </div>
     </div>
 
-    <form hx-get="https://fortepan.lndo.site/mainstreet360" hx-trigger="node-changed" hx-target="#fi-photosphere-metadata">
-<!--        <div data-photosphere-data data-map="#photosphere-map" data-node-href="{% krono_url "kronofoto:mainstreetview.json" %}" data-node-start="{{ object.id }}" data-node-param="id" style="width: 100vw; height: 80vh">-->
-<!--        </div>-->
-        <div data-photosphere-data="#photosphere-data" data-node-href="https://fortepan.lndo.site//mainstreet360/json" data-node-start="{{ object.id }}" data-node-param="id" style="width: 100vw; height: 80vh">
+    <form hx-get="{% krono_url "kronofoto:mainstreetview" %}" hx-trigger="node-changed" hx-target="#fi-photosphere-metadata">
+        <div data-photosphere-data data-map="#photosphere-map" data-node-href="{% krono_url "kronofoto:mainstreetview.json" %}" data-node-start="{{ object.id }}" data-node-param="id" style="width: 100vw; height: 80vh">
         </div>
-        <div id="photosphere-map" style="width: 100vw; height: 50vh;">
-        </div>
-        <input name="id" type="hidden" />
-    </form>
 
-    <div class="photosphere-map" id="photosphere-map" data-toggler=".expanded">
-        <div class="photosphere-map__map"></div>
-        <div class="photosphere-map__fullscreen" data-toggle="photosphere-map"></div>
-        <div class="photosphere-map__zoom zoom-buttons">
-            <div class="zoom-button__plus"></div>
-            <div class="zoom-button__minus"></div>
+        <div class="photosphere-map" id="photosphere-map-wrapper" data-toggler=".expanded">
+            <div class="photosphere-map__map" id="photosphere-map"></div>
+            <div class="photosphere-map__fullscreen" data-toggle="photosphere-map-wrapper"></div>
         </div>
-    </div>
+
+        <input name="id" type="hidden">
+    </form>
 </div>
+
+<nav class="fi-timeline" id="fi-timeline">
+
+    <div class="fi-thumbnail-carousel">
+
+        <div class="back-arrows" data-back-arrows="">
+            <a id="backward" href="#"></a>
+        </div>
+
+        <div class="slide-container">
+            <ul id="fi-preload-zone"></ul>
+            <div data-fi-load-thumbnails="" class="hide"></div>
+            <ul id="fi-thumbnail-carousel-images" style="left: 0px;" data-fi-thumbnail-carousel-images="" class="ui-draggable ui-draggable-handle">
+                {% for x in "........................................."|make_list %}
+                    <li {% if forloop.counter == 21 %}data-active{% endif %}>
+                        <a href="#">
+                            <img src="https://picsum.photos/75/75" height="75" width="75">
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="forward-arrows" data-forward-arrows="">
+            <a id="forward" href="#"></a>
+        </div>
+
+    </div>
+
+</nav>
+
+<nav class="decade-timeline">
+    <ul>
+        <li>1900</li>
+        <li>1910</li>
+        <li>1920</li>
+        <li>1930</li>
+        <li>1940</li>
+        <li>1950</li>
+        <li>1960</li>
+        <li>1970</li>
+        <li class="active">1980</li>
+        <li>1990</li>
+        <li>2000</li>
+    </ul>
+</nav>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- Remove later: Add some sample map stuff for now -->
+<script>
+  var map = L.map('photosphere-map', {
+    center: [51.505, -0.09],
+    zoom: 6,
+    zoomControl: false
+  });
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map)
+
+  L.control.zoom({
+    position: 'bottomright'
+  }).addTo(map);
+
+  // Resize map when expanded
+  setInterval(function(){ map.invalidateSize()}, 400);
+</script>
+
+<!-- Remove later: sample content for popups -->
+<script type="text/template" id="lorem-content">
+    <h1>HTML Ipsum Presents</h1>
+
+    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.
+        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam
+        egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et
+        sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet,
+        wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac
+        dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54469.108394396746!2d6.9617553450295855!3d44.151844842645815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12cdaf6678af879d%3A0xcabc15aee7b89386!2sParc%20national%20du%20Mercantour!5e0!3m2!1sfr!2sfr!4v1611498421096!5m2!1sfr!2sfr" width="100%" height="300" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+    <h2>Header Level 2</h2>
+
+    <ol>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+    </ol>
+
+    <blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis aliquet
+        congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend, libero at sagittis mollis,
+        tellus est malesuada tellus, at luctus turpis elit sit amet quam. Vivamus pretium ornare est.</p></blockquote>
+
+    <h3>Header Level 3</h3>
+
+    <ul>
+        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+        <li>Aliquam tincidunt mauris eu risus.</li>
+    </ul>
+</script>
 
 {% endblock %}
